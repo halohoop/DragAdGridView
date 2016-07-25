@@ -7,7 +7,6 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
 import net.halohoop.draggableadgridview.utils.DensityUtil;
-import net.halohoop.draggableadgridview.utils.LogUtils;
 import net.halohoop.draggableadgridview.utils.ScreenUtils;
 import net.halohoop.draggableadgridview.views.AdBarFrameLayout;
 import net.halohoop.draggableadgridview.views.DraggableAdGridView;
@@ -267,9 +266,10 @@ public abstract class BaseDraggableAdAdapter<T> extends BaseAdapter {
      * @return
      */
     protected View getView4AdVpFirst() {
-        if (mAdBarFrameLayout == null)
+        if (mAdBarFrameLayout == null) {
             mAdBarFrameLayout = new AdBarFrameLayout(mContext, mDraggableAdGridView, null);
-        mAdBarFrameLayout.addView(getView4AdVp());
+            mAdBarFrameLayout.addView(getView4AdVp());
+        }
         return mAdBarFrameLayout;
     }
 
