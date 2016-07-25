@@ -561,7 +561,7 @@ public class DraggableAdGridView extends GridView {
     @Override
     public void setAdapter(ListAdapter adapter) {
         if (!(adapter instanceof BaseDraggableAdAdapter)) {
-            throw new IllegalArgumentException("please use a adapter which is a implement of BaseDraggableAdAdapter");
+            throw new IllegalArgumentException("please use a adapter which is a implementation of BaseDraggableAdAdapter");
         }
         super.setAdapter(adapter);
     }
