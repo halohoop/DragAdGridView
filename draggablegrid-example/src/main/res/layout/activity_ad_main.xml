@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:halohoop="http://schemas.android.com/apk/res/net.halohoop.dragadgridview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#33e8e8e8"
+        android:text="Hello World2!" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <net.halohoop.draggableadgridview.views.DraggableAdGridView
+            android:id="@+id/dgv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="3"
+            halohoop:adbar_height="30dp"
+            halohoop:adbar_rawposition="3"
+            halohoop:adbar_visiable="true"
+            halohoop:crossline_color="#8e8e8e"></net.halohoop.draggableadgridview.views.DraggableAdGridView>
+    </FrameLayout>
+</LinearLayout>

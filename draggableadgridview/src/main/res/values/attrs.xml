@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DraggableAdGridViewAdBar">
+        <attr name="adbar_visiable" format="boolean" />
+        <attr name="adbar_height" format="dimension" />
+        <attr name="adbar_rawposition" format="integer" />
+        <attr name="crossline_color" format="color" />
+    </declare-styleable>
+</resources>
