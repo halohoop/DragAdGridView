@@ -29,13 +29,14 @@ public class MainAdActivity extends AppCompatActivity {
 
     private DraggableAdGridView dgv;
     private List<DataBean> mDataList;
+    private MyDraggableAdapter myDraggableAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_main);
         dgv = (DraggableAdGridView) findViewById(R.id.dgv);
-        dgv.setAllowSwapAnimation(true);//允许动画
+        dgv.setAllowSwapAnimation(false);//允许动画
         mDataList = new ArrayList<>();
         new AsyncTask<Integer, Integer, String>() {
 
@@ -43,7 +44,9 @@ public class MainAdActivity extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 ToastSingle.showToast(getBaseContext(), "结束5\"等待");
-                dgv.setAdapter(new MyDraggableAdapter(mDataList));
+                myDraggableAdapter = new MyDraggableAdapter(mDataList);
+                dgv.setAdapter(myDraggableAdapter);
+
                 LayoutAnimationController lac = new LayoutAnimationController(
                         AnimationUtils.loadAnimation(MainAdActivity.this, R.anim.main_item_anim));
                 // 设置顺序
@@ -53,6 +56,20 @@ public class MainAdActivity extends AppCompatActivity {
                 dgv.setLayoutAnimation(lac);
                 // 开启动画
                 dgv.startLayoutAnimation();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SystemClock.sleep(5000);
+                        dgv.setAdbarHeight(30);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                myDraggableAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                }).start();
             }
 
             @Override
@@ -156,9 +173,9 @@ public class MainAdActivity extends AppCompatActivity {
         public Object instantiateItem(ViewGroup container, int position) {
             View view = null;
             if (position % 2 == 0) {
-                view = createView(texts.get(position), "#00ff00");
+                view = createView(texts.get(position), "#3300ff00");
             } else {
-                view = createView(texts.get(position), "#ff0000");
+                view = createView(texts.get(position), "#33ff0000");
             }
             container.addView(view);
             return view;
