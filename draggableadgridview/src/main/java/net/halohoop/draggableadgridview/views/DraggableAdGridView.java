@@ -1,9 +1,6 @@
 package net.halohoop.draggableadgridview.views;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,6 +11,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
@@ -29,9 +27,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+
 import net.halohoop.draggableadgridview.R;
 import net.halohoop.draggableadgridview.adapters.BaseDraggableAdAdapter;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -471,6 +475,27 @@ public class DraggableAdGridView extends GridView {
             mLayoutParams.alpha = 0.5f;
             mWindowManager.addView(mDragImageView, mLayoutParams);
         }
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public int getNumColumns() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            return super.getNumColumns();
+
+        try {
+            Field numColumns = getClass().getSuperclass().getDeclaredField("mNumColumns");
+            numColumns.setAccessible(true);
+            return numColumns.getInt(this);
+        } catch (Exception e) {
+        }
+
+        int columns = AUTO_FIT;
+        if (getChildCount() > 0) {
+            int width = getChildAt(0).getMeasuredWidth();
+            if (width > 0) columns = getWidth() / width;
+        }
+        return columns;
     }
 
     @Override
