@@ -29,11 +29,13 @@ public abstract class BaseDraggableAdAdapter<T> extends BaseAdapter {
     private Context mContext;
     private DraggableAdGridView mDraggableAdGridView;
     private AdBarFrameLayout mAdBarFrameLayout;
+    private int mScreenWidth;
 
     public BaseDraggableAdAdapter(Context context, DraggableAdGridView draggableAdGridView, List<T> dataList) {
         this.mDraggableAdGridView = draggableAdGridView;
         addAllAndFixNullItemInDataList(dataList);
         this.mContext = context;
+        mScreenWidth = ScreenUtils.getScreenSize(mContext).x;
     }
 
     public void addAllAndFixNullItemInDataList(List<T> dataList) {
@@ -293,11 +295,14 @@ public abstract class BaseDraggableAdAdapter<T> extends BaseAdapter {
             emptyView = new View(parent.getContext());
             emptyView.setBackgroundColor(
                     android.graphics.Color.parseColor("#00000000"));
-            int width = ScreenUtils.getScreenSize(mContext).x;
-            AbsListView.LayoutParams params = new AbsListView.LayoutParams(width / 3,
+            AbsListView.LayoutParams params = new AbsListView.LayoutParams(mScreenWidth / 3,
                     DensityUtil.dip2px(mContext, adbarHeight));
             emptyView.setLayoutParams(params);
             emptyView.setVisibility(View.INVISIBLE);
+        } else {
+            AbsListView.LayoutParams params = new AbsListView.LayoutParams(mScreenWidth / 3,
+                    DensityUtil.dip2px(mContext, adbarHeight));
+            emptyView.setLayoutParams(params);
         }
         return emptyView;
     }
@@ -308,5 +313,11 @@ public abstract class BaseDraggableAdAdapter<T> extends BaseAdapter {
         else
             this.mHidePosition = hidePosition - mDraggableAdGridView.getmNumColumns();
         this.notifyDataSetInvalidated();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        mAdBarFrameLayout.requestLayout();
+        super.notifyDataSetChanged();
     }
 }

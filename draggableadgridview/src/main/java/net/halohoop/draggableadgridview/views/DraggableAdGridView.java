@@ -217,7 +217,7 @@ public class DraggableAdGridView extends GridView {
         mDragImageView = new ImageView(getContext());
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(crossLineColor);
-        mPaint.setStrokeWidth(1f);
+        mPaint.setStrokeWidth(0.2f);
         mDragImageView.setBackgroundColor(android.graphics.Color.parseColor("#33ff0000"));
     }
 
@@ -233,6 +233,10 @@ public class DraggableAdGridView extends GridView {
 
     public int getAdBarLastEmptyItemPostion() {
         return mAdBarLastEmptyItemPostion;
+    }
+
+    public void setAdbarHeight(float mAdbarHeight) {
+        this.mAdbarHeight = mAdbarHeight;
     }
 
     public float getAdbarHeight() {
@@ -294,8 +298,8 @@ public class DraggableAdGridView extends GridView {
                     mLongPressPostRun = new CreateAndHideDragView(left, top);
                     mHandler.postDelayed(mLongPressPostRun, mLongPressMills);
                 }
-                mUpScrollBorder = getHeight() * 5 / 6;
-                mDownScrollBorder = getHeight() / 6;
+                mUpScrollBorder = getHeight() * 4 / 5;
+                mDownScrollBorder = getHeight() / 5;
                 break;
             case MotionEvent.ACTION_MOVE:
                 int moveX = (int) ev.getX();
