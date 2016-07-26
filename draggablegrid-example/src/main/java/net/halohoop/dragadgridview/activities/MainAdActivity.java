@@ -36,7 +36,7 @@ public class MainAdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_main);
         dgv = (DraggableAdGridView) findViewById(R.id.dgv);
-        dgv.setAllowSwapAnimation(false);//允许动画
+        dgv.setAllowSwapAnimation(true);//允许动画
         mDataList = new ArrayList<>();
         new AsyncTask<Integer, Integer, String>() {
 
@@ -46,17 +46,7 @@ public class MainAdActivity extends AppCompatActivity {
                 ToastSingle.showToast(getBaseContext(), "结束5\"等待");
                 myDraggableAdapter = new MyDraggableAdapter(mDataList);
                 dgv.setAdapter(myDraggableAdapter);
-
-                LayoutAnimationController lac = new LayoutAnimationController(
-                        AnimationUtils.loadAnimation(MainAdActivity.this, R.anim.main_item_anim));
-                // 设置顺序
-//                lac.setOrder(LayoutAnimationController.ORDER_RANDOM);
-                lac.setOrder(LayoutAnimationController.ORDER_NORMAL);
-                // 设置一个布局动画
-                dgv.setLayoutAnimation(lac);
-                // 开启动画
-                dgv.startLayoutAnimation();
-
+//                animateGridIn();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -65,6 +55,18 @@ public class MainAdActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 dgv.setAdbarShowOrHide(false);
+                            }
+                        });
+                    }
+                }).start();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SystemClock.sleep(10000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dgv.setAdbarShowOrHide(true);
                             }
                         });
                     }
@@ -92,6 +94,18 @@ public class MainAdActivity extends AppCompatActivity {
                 super.onPreExecute();
             }
         }.execute();
+    }
+
+    private void animateGridIn() {
+        LayoutAnimationController lac = new LayoutAnimationController(
+                AnimationUtils.loadAnimation(MainAdActivity.this, R.anim.main_item_anim));
+        // 设置顺序
+//                lac.setOrder(LayoutAnimationController.ORDER_RANDOM);
+        lac.setOrder(LayoutAnimationController.ORDER_NORMAL);
+        // 设置一个布局动画
+        dgv.setLayoutAnimation(lac);
+        // 开启动画
+        dgv.startLayoutAnimation();
     }
 
     private class MyDraggableAdapter extends BaseDraggableAdAdapter<DataBean> {

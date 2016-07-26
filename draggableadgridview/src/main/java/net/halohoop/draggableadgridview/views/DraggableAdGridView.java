@@ -14,6 +14,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 
 import net.halohoop.draggableadgridview.R;
 import net.halohoop.draggableadgridview.adapters.BaseDraggableAdAdapter;
+import net.halohoop.draggableadgridview.utils.LogUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -118,7 +120,7 @@ public class DraggableAdGridView extends GridView {
     /**
      * 拖动时候GV上下滚动的速度
      */
-    private final int speed = 50;
+    private final int speed = 10;
     private int moveY;
 
     private int mUpScrollBorder;
@@ -130,22 +132,44 @@ public class DraggableAdGridView extends GridView {
         @Override
         public void run() {
             int scrollY;
-            if (getFirstVisiblePosition() == 0
-                    || getLastVisiblePosition() == getCount() - 1) {
-                mHandler.removeCallbacks(mScrollRunnable);
-            }
+//            if (getFirstVisiblePosition() == 0
+//                    || getLastVisiblePosition() == getCount() - 1) {
+//                mHandler.removeCallbacks(mScrollRunnable);
+//                return;
+//            }
 
-            if (moveY > mUpScrollBorder) {//
+            if (moveY > mDownScrollBorder) {//上滚,看下面部分
+                LogUtils.i("上滚,看下面部分 -speed:" + speed);
+                if (getLastVisiblePosition() == getCount() - 1
+                        && getChildAt(getChildCount() - 1).getBottom() >= 0) {
+                    View lastChild = getChildAt(getChildCount() - 1);
+                    int top = lastChild.getTop();
+                    int height = getHeight();
+                    int distance = height - top;
+                    int lastChildHeight = lastChild.getHeight();
+                    if (distance < lastChildHeight) {
+                        mHandler.removeCallbacks(mScrollRunnable);
+                        return;
+                    }
+                }
                 scrollY = speed;
                 mHandler.postDelayed(mScrollRunnable, 500);
                 // mHandler.post(mScrollRunnable);
-            } else if (moveY < mDownScrollBorder) {
+            } else if (moveY < mUpScrollBorder) {//下滚,看上面部分
+                LogUtils.i("下滚,看上面部分 speed:" + speed);
+                if (getFirstVisiblePosition() == 0) {
+                    int top = getChildAt(0).getTop();
+                    if (top >= 0) {
+                        mHandler.removeCallbacks(mScrollRunnable);
+                        return;
+                    }
+                }
                 scrollY = -speed;
                 mHandler.postDelayed(mScrollRunnable, 500);
                 // mHandler.post(mScrollRunnable);
             } else {
-                scrollY = 0;
                 mHandler.removeCallbacks(mScrollRunnable);
+                return;
             }
             if (0 != scrollY)
                 smoothScrollBy(scrollY, 10);
@@ -218,7 +242,7 @@ public class DraggableAdGridView extends GridView {
         mDragImageView = new ImageView(getContext());
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(crossLineColor);
-        mPaint.setStrokeWidth(0.2f);
+//        mPaint.setStrokeWidth(1.0f);
         mDragImageView.setBackgroundColor(android.graphics.Color.parseColor("#33ff0000"));
     }
 
@@ -251,6 +275,7 @@ public class DraggableAdGridView extends GridView {
         } else {
             this.mAdbarHeight = 0;
         }
+
         BaseAdapter adapter = (BaseAdapter) getAdapter();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
@@ -316,8 +341,8 @@ public class DraggableAdGridView extends GridView {
                     mLongPressPostRun = new CreateAndHideDragView(left, top);
                     mHandler.postDelayed(mLongPressPostRun, mLongPressMills);
                 }
-                mUpScrollBorder = getHeight() * 4 / 5;
-                mDownScrollBorder = getHeight() / 5;
+                mDownScrollBorder = getHeight() * 4 / 5;
+                mUpScrollBorder = getHeight() / 5;
                 break;
             case MotionEvent.ACTION_MOVE:
                 int moveX = (int) ev.getX();
@@ -523,6 +548,10 @@ public class DraggableAdGridView extends GridView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setColor(crossLineColor);
+
         int itemWidth = getMeasuredWidth() / getNumColumns();
         int measuredHeight = getMeasuredHeight();
         //画(getNumColumns-1)条竖线
@@ -534,29 +563,29 @@ public class DraggableAdGridView extends GridView {
         //算出需要画多少横线
 //        ToastSingle.showToast(getContext(), "" + getChildAt(0).getTop());
         for (int i = 0; i < getChildCount(); i++) {
-            int top = getChildAt(i).getTop();
-            if (top > 0 && i % 3 == 0) {
-                canvas.drawLine(0, top, getMeasuredWidth(), top, mPaint);
-                //-----------------
-//                if (top != mLastTop) {
-//                    canvas.drawLine(0, top, getMeasuredWidth(), top, mPaint);
-//                }
-//                //这个else情况只在最后一个解决当所有item的高度
-//                // 都不超过整体gridview的时候导致最后一行没有分割线
-//                if (i == (getChildCount() - 1)) {//当最后一个的时候,判断整体高度是否超过gridview
-////                    ToastSingle.showToast(getContext(), getChildAt(i).getBottom() + "");
-//                    View childAt = getChildAt(i);
-//                    if (childAt.getBottom() < getMeasuredHeight()) {
-//                        canvas.drawLine(0, childAt.getBottom(),
-//                                getMeasuredWidth(), childAt.getBottom(), mPaint);
-//                    }
-//                }
+            View childAt = getChildAt(i);
+            int top = childAt.getTop();
+            if (top > 0 && i % getmNumColumns() == 0) {
+                Object tag = childAt.getTag();
+                if (tag != null) {
+                    if (tag instanceof String) {
+                        if (TextUtils.equals("HalohoopEmptyMark", (String) tag)) {
+                            LogUtils.i("HalohoopEmptyMark");
+                        } else if (TextUtils.equals("HalohoopAdContainerMark", (String) tag)) {
+                            LogUtils.i("HalohoopAdContainerMark");
+                            canvas.drawLine(0, top, getMeasuredWidth(), top, mPaint);
+                        } else {
+                            canvas.drawLine(0, top, getMeasuredWidth(), top, mPaint);
+                        }
+                    } else {
+                        canvas.drawLine(0, top, getMeasuredWidth(), top, mPaint);
+                    }
+                } else {
+                    canvas.drawLine(0, top, getMeasuredWidth(), top, mPaint);
+                }
             }
-            mLastTop = top;
         }
     }
-
-    private int mLastTop = -1;
 
     private static int getStatusHeight(Context context) {
         int statusHeight;

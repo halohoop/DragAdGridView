@@ -270,6 +270,7 @@ public abstract class BaseDraggableAdAdapter<T> extends BaseAdapter {
     protected View getView4AdVpFirst() {
         if (mAdBarFrameLayout == null) {
             mAdBarFrameLayout = new AdBarFrameLayout(mContext, mDraggableAdGridView, null);
+            mAdBarFrameLayout.setTag("HalohoopAdContainerMark");
             mAdBarFrameLayout.addView(getView4AdVp());
         }
         return mAdBarFrameLayout;
@@ -294,6 +295,7 @@ public abstract class BaseDraggableAdAdapter<T> extends BaseAdapter {
         int adbarHeightDip2px = DensityUtil.dip2px(mContext, adbarHeight);
         if (emptyView == null) {
             emptyView = new View(parent.getContext());
+            emptyView.setTag("HalohoopEmptyMark");//mark this view as a empty view
             emptyView.setBackgroundColor(
                     android.graphics.Color.parseColor("#00000000"));// transparent
             AbsListView.LayoutParams params = new AbsListView.LayoutParams(
