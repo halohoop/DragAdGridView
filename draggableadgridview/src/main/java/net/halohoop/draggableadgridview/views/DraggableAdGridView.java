@@ -120,7 +120,7 @@ public class DraggableAdGridView extends GridView {
     /**
      * 拖动时候GV上下滚动的速度
      */
-    private final int speed = 10;
+    private final int speed = 20;
     private int moveY;
 
     private int mUpScrollBorder;
@@ -143,17 +143,18 @@ public class DraggableAdGridView extends GridView {
                 if (getLastVisiblePosition() == getCount() - 1
                         && getChildAt(getChildCount() - 1).getBottom() >= 0) {
                     View lastChild = getChildAt(getChildCount() - 1);
-                    int top = lastChild.getTop();
+                    int bottom = lastChild.getBottom();
                     int height = getHeight();
-                    int distance = height - top;
-                    int lastChildHeight = lastChild.getHeight();
-                    if (distance < lastChildHeight) {
+                    int distance = bottom - height;
+                    LogUtils.i("distance:" + distance);
+//                    int lastChildHeight = lastChild.getHeight();
+                    if (distance <= 1) {//最后一个已完全出来
                         mHandler.removeCallbacks(mScrollRunnable);
                         return;
                     }
                 }
                 scrollY = speed;
-                mHandler.postDelayed(mScrollRunnable, 500);
+                mHandler.postDelayed(mScrollRunnable, 100);
                 // mHandler.post(mScrollRunnable);
             } else if (moveY < mUpScrollBorder) {//下滚,看上面部分
                 LogUtils.i("下滚,看上面部分 speed:" + speed);
@@ -165,7 +166,7 @@ public class DraggableAdGridView extends GridView {
                     }
                 }
                 scrollY = -speed;
-                mHandler.postDelayed(mScrollRunnable, 500);
+                mHandler.postDelayed(mScrollRunnable, 100);
                 // mHandler.post(mScrollRunnable);
             } else {
                 mHandler.removeCallbacks(mScrollRunnable);
@@ -548,9 +549,6 @@ public class DraggableAdGridView extends GridView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(crossLineColor);
 
         int itemWidth = getMeasuredWidth() / getNumColumns();
         int measuredHeight = getMeasuredHeight();

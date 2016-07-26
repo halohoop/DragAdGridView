@@ -317,7 +317,8 @@ public abstract class BaseDraggableAdAdapter<T> extends BaseAdapter {
             this.mHidePosition = hidePosition;
         else
             this.mHidePosition = hidePosition - mDraggableAdGridView.getmNumColumns();
-        this.notifyDataSetInvalidated();
+//        this.notifyDataSetInvalidated();//导致界面跳到最上面
+        this.notifyDataSetChanged();
     }
 
     @Override
