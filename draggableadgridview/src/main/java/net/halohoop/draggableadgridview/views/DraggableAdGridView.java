@@ -23,6 +23,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -105,15 +106,11 @@ public class DraggableAdGridView extends GridView {
      */
     private long mVibratorMills = 50;
     /**
-     * 默认广告条显示
-     * by default ad bar is shown
-     */
-    private boolean mAdbarVisiable = true;
-    /**
      * 默认广告条高度是 100
      * by default the height of ad bar is 100
      */
     private float mAdbarHeight = 100;
+    private float mTmpAdbarHeight = 100;
     private int mAdBarRawPostion = 3;
     private int mAdBarItemPostion = 0;
     private int mAdBarLastEmptyItemPostion = 0;
@@ -181,7 +178,11 @@ public class DraggableAdGridView extends GridView {
 
     public void setCrossLineColor(int resId) {
 //        crossLineColor = mContext.getResources().getColor(android.R.color.darker_gray);
-        crossLineColor = mContext.getResources().getColor(resId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            crossLineColor = mContext.getResources().getColor(resId, null);
+        } else {
+            crossLineColor = mContext.getResources().getColor(resId);
+        }
     }
 
     public DraggableAdGridView(Context context) {
@@ -198,8 +199,8 @@ public class DraggableAdGridView extends GridView {
         //read custom attrs set
         TypedArray attributes = context.obtainStyledAttributes(attrs,
                 R.styleable.DraggableAdGridViewAdBar);
-        mAdbarVisiable = attributes.getBoolean(R.styleable.DraggableAdGridViewAdBar_adbar_visiable, true);
         mAdbarHeight = attributes.getDimension(R.styleable.DraggableAdGridViewAdBar_adbar_height, 100);
+        mTmpAdbarHeight = mAdbarHeight;
         mAdBarRawPostion = attributes.getInteger(R.styleable.DraggableAdGridViewAdBar_adbar_rawposition, 3);
         mNumColumns = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "numColumns", -1);
         mAdBarItemPostion = mAdBarRawPostion * mNumColumns;
@@ -235,8 +236,25 @@ public class DraggableAdGridView extends GridView {
         return mAdBarLastEmptyItemPostion;
     }
 
-    public void setAdbarHeight(float mAdbarHeight) {
+    private void setAdbarHeight(float mAdbarHeight) {
         this.mAdbarHeight = mAdbarHeight;
+    }
+
+    /**
+     * please call this method in UIThread;
+     *
+     * @param true4ShowFalse4Hide
+     */
+    public void setAdbarShowOrHide(boolean true4ShowFalse4Hide) {
+        if (true4ShowFalse4Hide) {
+            this.mAdbarHeight = this.mTmpAdbarHeight;
+        } else {
+            this.mAdbarHeight = 0;
+        }
+        BaseAdapter adapter = (BaseAdapter) getAdapter();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public float getAdbarHeight() {

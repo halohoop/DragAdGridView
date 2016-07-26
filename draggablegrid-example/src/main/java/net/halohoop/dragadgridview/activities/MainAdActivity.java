@@ -61,11 +61,10 @@ public class MainAdActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         SystemClock.sleep(5000);
-                        dgv.setAdbarHeight(30);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                myDraggableAdapter.notifyDataSetChanged();
+                                dgv.setAdbarShowOrHide(false);
                             }
                         });
                     }

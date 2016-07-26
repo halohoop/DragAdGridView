@@ -21,9 +21,8 @@
             android:layout_height="match_parent"
             android:listSelector="@android:color/transparent"
             android:numColumns="3"
-            halohoop:adbar_height="100dp"
+            halohoop:adbar_height="30dp"
             halohoop:adbar_rawposition="3"
-            halohoop:adbar_visiable="false"
             halohoop:crossline_color="#8e8e8e"></net.halohoop.draggableadgridview.views.DraggableAdGridView>
     </FrameLayout>
 </LinearLayout>
