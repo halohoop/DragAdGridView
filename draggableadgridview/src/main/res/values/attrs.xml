@@ -4,5 +4,7 @@
         <attr name="adbar_height" format="dimension" />
         <attr name="adbar_rawposition" format="integer" />
         <attr name="crossline_color" format="color" />
+        <attr name="drag_view_bg_color" format="color" />
+        <attr name="drag_view_bg_alpha" format="float" />
     </declare-styleable>
 </resources>

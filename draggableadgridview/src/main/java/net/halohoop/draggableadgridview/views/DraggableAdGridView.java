@@ -87,6 +87,7 @@ public class DraggableAdGridView extends GridView {
      * item间的分割线的颜色，默认值是448e8e8e
      */
     private int crossLineColor = 0;
+    private static final int DEFAULT_DRAGVIEW_BGCOLOR = android.graphics.Color.parseColor("#55000000");
     private Paint mPaint;
     private WindowManager.LayoutParams mLayoutParams;
     private int mTopViewOffset;
@@ -176,6 +177,8 @@ public class DraggableAdGridView extends GridView {
                 smoothScrollBy(scrollY, 10);
         }
     };
+    private int mDragViewBgColor;
+    private float mDragViewBgAlpha = 1.0f;
 
     public boolean ismAllowAnimation() {
         return mAllowAnimation;
@@ -232,6 +235,9 @@ public class DraggableAdGridView extends GridView {
         mAdBarLastEmptyItemPostion = mAdBarItemPostion + mNumColumns - 1;
         crossLineColor = attributes.getColor(R.styleable.DraggableAdGridViewAdBar_crossline_color,
                 context.getResources().getColor(android.R.color.darker_gray));
+        mDragViewBgColor = attributes.getColor(R.styleable.DraggableAdGridViewAdBar_drag_view_bg_color,
+                DEFAULT_DRAGVIEW_BGCOLOR);
+        mDragViewBgAlpha = attributes.getFloat(R.styleable.DraggableAdGridViewAdBar_drag_view_bg_alpha, 1.0f);
         //初始化设置
         //initialize
         this.mContext = context;
@@ -243,8 +249,7 @@ public class DraggableAdGridView extends GridView {
         mDragImageView = new ImageView(getContext());
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(crossLineColor);
-//        mPaint.setStrokeWidth(1.0f);
-        mDragImageView.setBackgroundColor(android.graphics.Color.parseColor("#33ff0000"));
+        mDragImageView.setBackgroundColor(mDragViewBgColor);
     }
 
     /**
@@ -520,7 +525,7 @@ public class DraggableAdGridView extends GridView {
             mLayoutParams.y = view.getTop() + mDragViewOffsetY;
             mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-            mLayoutParams.alpha = 0.5f;
+            mLayoutParams.alpha = mDragViewBgAlpha;
             mWindowManager.addView(mDragImageView, mLayoutParams);
         }
     }

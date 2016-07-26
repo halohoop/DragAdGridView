@@ -23,6 +23,8 @@
             android:numColumns="4"
             halohoop:adbar_height="30dp"
             halohoop:adbar_rawposition="4"
-            halohoop:crossline_color="#E8E8E8"></net.halohoop.draggableadgridview.views.DraggableAdGridView>
+            halohoop:crossline_color="#E8E8E8"
+            halohoop:drag_view_bg_color="#3300ff00"
+            halohoop:drag_view_bg_alpha="1.0"></net.halohoop.draggableadgridview.views.DraggableAdGridView>
     </FrameLayout>
 </LinearLayout>
