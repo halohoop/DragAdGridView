@@ -250,6 +250,7 @@ public class DraggableAdGridView extends GridView {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(crossLineColor);
         mDragImageView.setBackgroundColor(mDragViewBgColor);
+        attributes.recycle();
     }
 
     /**
