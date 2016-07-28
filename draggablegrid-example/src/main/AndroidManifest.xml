@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.halohoop.dragadgridview">
+    package="com.halohoop.dragadgridview">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <application
@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
-        <activity android:name="net.halohoop.dragadgridview.activities.MainAdActivity">
+        <activity android:name="com.halohoop.dragadgridview.activities.MainAdActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

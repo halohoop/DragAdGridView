@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <net.halohoop.draggableadgridview.views.DraggableAdGridView
+        <com.halohoop.draggableadgridview.views.DraggableAdGridView
             android:id="@+id/dgv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,6 +25,6 @@
             halohoop:adbar_rawposition="4"
             halohoop:crossline_color="#E8E8E8"
             halohoop:drag_view_bg_color="#3300ff00"
-            halohoop:drag_view_bg_alpha="1.0"></net.halohoop.draggableadgridview.views.DraggableAdGridView>
+            halohoop:drag_view_bg_alpha="1.0"></com.halohoop.draggableadgridview.views.DraggableAdGridView>
     </FrameLayout>
 </LinearLayout>

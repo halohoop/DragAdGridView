@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
 
 android {
     compileSdkVersion 23
@@ -16,10 +17,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
+}
+
+//添加
+publish {
+    userOrg = 'halohoop'//bintray.com用户名
+    groupId = 'com.halohoop'//jcenter上的路径
+    artifactId = 'dragadgridview'//项目名称
+    publishVersion = '1.0.0'//版本号
+    desc = 'a smulation of AlipayPay first page GridView!'//描述，不重要
+    website = 'https://github.com/halohoop/dragadgridview'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }
