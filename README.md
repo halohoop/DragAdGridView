@@ -51,9 +51,11 @@
     }
 -- --
 ###### 4.implement methods;
+-- --
 * **①**.getView4NormalIcon(int position);//your grid item view;
 * **②**.getView4AdVp();//your ad bar view;
 * ![Markdown](http://i2.piimg.com/8359/158e754b6dfcdcb9.png)
+-- --
 ###### 5.setAdapter;
 -- --
 	dgv.setAdapter(new MyDraggableAdapter(dataList));
