@@ -35,7 +35,7 @@ public class MainAdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.halohoop.dragadgridview.R.layout.activity_ad_main);
         dgv = (DraggableAdGridView) findViewById(com.halohoop.dragadgridview.R.id.dgv);
-        dgv.setAllowSwapAnimation(true);//允许动画
+        dgv.setAllowSwapAnimation(true);//允许动画 allow movement animation
         mDataList = new ArrayList<>();
         new AsyncTask<Integer, Integer, String>() {
 
