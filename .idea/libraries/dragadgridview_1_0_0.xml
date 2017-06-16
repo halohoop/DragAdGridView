@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="dragadgridview-1.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/c3f188cab7d8120cd66bb1b1e08e721af7fd8afd/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/c3f188cab7d8120cd66bb1b1e08e721af7fd8afd/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c3f188cab7d8120cd66bb1b1e08e721af7fd8afd/output/jars/libs/nineoldandroids-2.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.halohoop/dragadgridview/1.0.0/ed7005e6c4fd48d0aec8c6e2a895129e61f4ab33/dragadgridview-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

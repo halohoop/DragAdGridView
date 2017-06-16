@@ -1,1 +1,1 @@
-include ':draggablegrid-example', ':draggableadgridview'
+include ':draggablegrid-example'
